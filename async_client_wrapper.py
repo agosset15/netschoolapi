@@ -12,7 +12,7 @@ DEFAULT_REQUESTS_TIMEOUT = 5
 
 class Requester(Protocol):
 
-    def __call__(self, request: httpx.Request, follow_redirects=False) -> Awaitable:  # type: ignore
+    def __call__(self, request: httpx.Request, follow_redirects=False) -> Awaitable:
         pass
 
 
@@ -25,7 +25,10 @@ class AsyncClientWrapper:
             default_requests_timeout = DEFAULT_REQUESTS_TIMEOUT
         self._default_requests_timeout = default_requests_timeout
 
-    def make_requester(self, requests_timeout: Optional[int]) -> Requester:
+    async def __aenter__(self) -> 'AsyncClientWrapper':
+        return self
+
+    def make_requester(self, requests_timeout: Optional[int]):
         # noinspection PyTypeChecker
         return functools.partial(self.request, requests_timeout)
 

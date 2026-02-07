@@ -77,7 +77,7 @@ class Subject(NetSchoolAPISchema):
         name = self.name.split('/')
         if len(name) > 1:
             self.grade = name.pop(0)
-            self.name = '/'.join(name)
+            self.name = name.pop(0)
         else:
             self.name = name[0]
         return self
